@@ -18,7 +18,10 @@
   "homepage": "https://github.com/wengwengweng/spider#readme",
   "dependencies": {
     "cheerio": "^0.22.0",
+    "eventproxy": "^0.3.5",
     "express": "^4.14.0",
-    "request": "^2.79.0"
+    "phantom": "^4.0.0",
+    "request": "^2.79.0",
+    "superagent": "^3.3.2"
   }
 }
