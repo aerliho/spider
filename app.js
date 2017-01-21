@@ -2,7 +2,8 @@ const phantom = require('phantom'),
       cheerio = require('cheerio'),
       fs = require('fs');
 
-var urlList = [],
+var url = 'https://www.zhihu.com/people/verna-fu/followers',
+    urlList = [],
     userList = [];
 
 function getUrl(){ //获取关注此用户的其他用户的url
@@ -11,25 +12,22 @@ function getUrl(){ //获取关注此用户的其他用户的url
   }
 }
 
-async function getInfo() {
+async function getInfo(url) {
     const instance = await phantom.create();
     const page = await instance.createPage();
     await page.on("onResourceRequested", function(requestData) {
-        // console.info('Requesting', requestData.url)
+        console.info('Requesting', requestData.url)
     });
 
-    const status = await page.open('https://www.zhihu.com/people/verna-fu/followers');
-    // console.log(status);
+    const status = await page.open(url);
+
 
     const content = await page.property('content');
 
     $ = cheerio.load(content);
 
-    const reg = /\w-->\w.*\w<!--/g
-
     let user = {
       'name' : $('.ProfileHeader-name').text(),
-      'place' : $('').text(),
       'intro' : $('.RichText.ProfileHeader-headline').text(),
       'type' : $('.ProfileHeader-infoItem').eq(0).text(),
       'edu' : $('.ProfileHeader-infoItem').eq(1).text(),
@@ -37,19 +35,28 @@ async function getInfo() {
 
     userList.push(user);
 
-
     getUrl();
-
-    // $('.UserItem-name .UserLink-link').map(function(i){
-    //   console.log($('.UserItem-name .UserLink-link').eq(i).text());
-    // })
 
     await instance.exit();
 
-    console.log(urlList);
+    // console.log(urlList);
     console.log(userList);
+
+    var allPage = $('.Pagination button').eq(-2).text();//获取总页数
+    console.log(allPage);
+
+    var currentpage = url.split("?page=")[1]; //获取当前页数
+    console.log(currentpage);
+
+    if(currentpage < allPage && currentpage<=5){//以防总页数太多
+      url = url.split('?page=')[0]+'?page='+(parseInt(currentpage)+1);
+      getInfo(url);
+    }else{
+      userList.push(user);
+      getInfo(urlList.shift()+'?page=1');
+    }
 
 
 };
 
-getInfo();
+getInfo(url);

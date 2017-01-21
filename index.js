@@ -4,7 +4,7 @@ var cheerio = require('cheerio');
 var request = require('request');
 
 
-var url = 'https://www.zhihu.com/people/wei-zhen-dong-73/followers?page=1'，
+var url = 'https://www.zhihu.com/people/wei-zhen-dong-73/followers?page=1',
     userList = [],
     urlList = [];
 
@@ -29,7 +29,7 @@ function getInfo(url){ //获取当前用户信息，并递归
       $ = cheerio.load(body);
 
       let user = {
-        "name" : $('.ProfileHeader-name').text() || ""，
+        "name" : $('.ProfileHeader-name').text() || "",
       }
       getUrl();
 
@@ -46,7 +46,7 @@ function getInfo(url){ //获取当前用户信息，并递归
 
         userList.push(user);
 
-        getInfo(urlList.shift()+'?page=1')；
+        getInfo(urlList.shift()+'?page=1');
 
       }
     }
