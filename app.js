@@ -16,16 +16,13 @@ async function getInfo(url) {
     const instance = await phantom.create();
     const page = await instance.createPage();
     await page.on("onResourceRequested", function(requestData) {
-        console.info('Requesting', requestData.url)
+        // console.info('Requesting', requestData.url)
     });
 
     const status = await page.open(url);
-
-
     const content = await page.property('content');
 
     $ = cheerio.load(content);
-
     let user = {
       'name' : $('.ProfileHeader-name').text(),
       'intro' : $('.RichText.ProfileHeader-headline').text(),
@@ -39,16 +36,13 @@ async function getInfo(url) {
 
     await instance.exit();
 
-    // console.log(urlList);
-    console.log(userList);
+    console.log(user);
 
     var allPage = $('.Pagination button').eq(-2).text();//获取总页数
-    console.log(allPage);
 
     var currentpage = url.split("?page=")[1]; //获取当前页数
-    console.log(currentpage);
 
-    if(currentpage < allPage && currentpage<=5){//以防总页数太多
+    if(currentpage < allPage && currentpage <= 5){//以防总页数太多
       url = url.split('?page=')[0]+'?page='+(parseInt(currentpage)+1);
       getInfo(url);
     }else{
