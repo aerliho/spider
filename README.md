@@ -22,7 +22,7 @@ node.js & spider
 虽然有很多小问题但在主要目的基本实现，  
 若要运行 请在t中输入:
 ```
-node --harmony-async-await index.js   //  index1.js和index2.js只需用node命令即可运行
+node --harmony-async-await index3.js   //  index1.js和index2.js只需用node命令即可运行
 ```
 
 ----- 持续完善中 -----
