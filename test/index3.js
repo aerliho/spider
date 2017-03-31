@@ -22,6 +22,8 @@ async function getInfo(url) {
     const status = await page.open(url);
     const content = await page.property('content');
 
+    // console.log(content);
+
     $ = cheerio.load(content);
     let user = {
       'name' : $('.ProfileHeader-name').text(),
